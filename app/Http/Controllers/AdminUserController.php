@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Session;
 
 class AdminUserController extends Controller
 {
@@ -122,9 +123,13 @@ class AdminUserController extends Controller
         $input['password'] = bcrypt($request->password);
         $user->update($input);
 
+        //kreiranje poruke prilikom edita usera
+        Session::flash('edited_user', 'The user has been edited');
+
         return redirect('/admin/users');
 
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -134,6 +139,12 @@ class AdminUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        unlink(public_path().$user->photo->file);
+        $user->delete();
+
+        //kreiranje poruke prilikom brisanja usera
+        Session::flash('deleted_user', 'The user has been deleted');
+        return redirect('/admin/users');
     }
 }
