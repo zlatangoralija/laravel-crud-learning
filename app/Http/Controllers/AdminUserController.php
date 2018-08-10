@@ -55,6 +55,7 @@ class AdminUserController extends Controller
         }
 
 
+        //Porvjeravamo da li se uploada fajl, zazim kreiramo fajl sa imenom, smjestamo ga u "Photos" i premjestamo sliku i "images" direktorij
         if ($file = $request->file('photo_id')){
 
             $name = time().$file->getClientOriginalName();
