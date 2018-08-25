@@ -145,7 +145,7 @@ class AdminUserController extends Controller
         $user->delete();
 
         //kreiranje poruke prilikom brisanja usera
-        Session::flash('deleted_user', 'The user has been deleted');
+        Session::flash('deleted_post', 'The user has been deleted');
         return redirect('/admin/users');
     }
 }

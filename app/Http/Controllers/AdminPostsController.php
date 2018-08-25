@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdminPostsController extends Controller
 {
@@ -82,7 +83,10 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $categories = Category::lists('name', 'id')->all();
+
+        return view('admin.post.edit', compact('post', 'categories'));
     }
 
     /**
@@ -94,7 +98,19 @@ class AdminPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+
+        //Porvjeravamo da li se uploada fajl, zazim kreiramo fajl sa imenom, smjestamo ga u "Photos" i premjestamo sliku i "images" direktorij
+        if ($file = $request->file('photo_id')){
+            $name = time().$file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['file'=>$name]);
+            $input['photo_id'] = $photo->id;
+        }
+
+        Auth::user()->posts()->whereId($id)->first()->update($input);
+        return redirect('/admin/posts');
+
     }
 
     /**
@@ -105,6 +121,13 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        unlink(public_path().$post->photo->file);
+        $post->delete();
+
+        //kreiranje poruke prilikom brisanja usera
+        Session::flash('deleted_user', 'The post has been deleted');
+        return redirect('/admin/posts');
+
     }
 }
