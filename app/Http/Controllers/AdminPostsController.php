@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\PostsCreateRequest;
 use App\Photo;
 use App\Post;
@@ -31,7 +32,9 @@ class AdminPostsController extends Controller
      */
     public function create()
     {
-        return view('admin.post.create');
+        $categories = Category::lists('name', 'id')->all();
+
+        return view('admin.post.create', compact('categories'));
     }
 
     /**
@@ -56,7 +59,7 @@ class AdminPostsController extends Controller
 
         $user->posts()->create($input);
 
-        return redirect('admin/posts/create');
+        return redirect('admin/posts/');
 
     }
 
