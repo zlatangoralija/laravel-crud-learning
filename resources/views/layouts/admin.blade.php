@@ -55,8 +55,16 @@
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
+                    {{--<li><a class="dropdown-item" href="{{ route('logout') }}"--}}
+                               {{--onclick="event.preventDefault();--}}
+                        {{--document.getElementById('logout-form').submit();">--}}
+                            {{--{{ _('Odjava') }}--}}
+
+                            {{--<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
+                                {{--@csrf--}}
+                            {{--</form>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                 </ul>
                 <!-- /.dropdown-user -->
             </li>
@@ -94,8 +102,6 @@
                         <!-- /.nav-second-level -->
                     </li>
 
-
-
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -104,6 +110,9 @@
                             </li>
                             <li>
                                 <a href="{{route('admin.posts.create')}}">Create Post</a>
+                            </li>
+                            <li>
+                                <a href="{{route('admin.comments.index')}}">All comments</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
