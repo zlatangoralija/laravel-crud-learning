@@ -24,6 +24,7 @@
             <td>{{$comment->email}}</td>
             <td>{{$comment->body}}</td>
             <td><a href="{{route('home.post', $comment->post->id)}}">View post</a> </td>
+            <td><a href="{{route('admin.comments.replies.show', $comment->id)}}">View replies</a> </td>
             <td>{{$comment->created_at->diffForHumans()}}</td>
             <td>
                 @if($comment->is_active == 1)

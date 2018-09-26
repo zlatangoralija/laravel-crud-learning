@@ -34,7 +34,7 @@
                 <td>{{$post->user->name}}</td>
                 <td>{{$post->category ? $post->category->name : "No category"}}</td>
                 <td><a href="{{route('admin.posts.edit', $post->id)}}">{{$post->title}}</a> </td>
-                <td><a href="{{route('home.post', $post->id)}}">View post</a> </td>
+                <td><a href="{{route('home.post', $post->slug)}}">View post</a> </td>
                 <td><a href="{{route('admin.comments.show', $post->id)}}">View comment</a> </td>
                 <td>{{$post->body}}</td>
                 <td>{{$post->created_at->diffForHumans()}}</td>
@@ -44,5 +44,11 @@
           @endif
         </tbody>
     </table>
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-5">
+            {{$posts->render()}}
+        </div>
+    </div>
 
     @stop

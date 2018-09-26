@@ -59,7 +59,7 @@
     <!-- Posted Comments -->
 
     <!-- Comment -->
-    @if(count($comments)>0)
+    @if(count($comments) > 0)
         @foreach($comments as $comment)
             <div class="media">
                 <a class="pull-left" href="#">
@@ -70,32 +70,42 @@
                         <small>{{$comment->created_at->diffForHumans()}}</small>
                     </h4>
                     <p>{{$comment->body}}</p>
-                    @if(count($comment->replies)>0)
+                    @if(count($comment->replies) > 0)
                         @foreach($comment->replies as $reply)
-                        <!-- Nested Comment -->
-                            <div id="nested-comment" class="media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object" height="64" src="{{$reply->photo}}" alt="">
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading">{{$reply->author}}
-                                        <small>{{$reply->created_at->diffForHumans()}}</small>
-                                    </h4>
-                                    <p>{{$reply->body}}</p>
-                                </div>
-                                {!! Form::open(['method'=>'POST', 'action'=>'CommentRepliesController@createReply'])!!}
-                                <input type="hidden" name="comment_id" value="{{$comment->id}}">
-                                <div class="form-group">
-                                    {!! Form::label('body','Reply:') !!}
-                                    {!! Form::textarea('body',null, ['class'=>'form-control', 'rows'=>'1']) !!}
-                                </div>
+                            @if($reply->is_active == 1)
+                                <!-- Nested Comment -->
+                                <div id="nested-comment" class="media">
+                                    <a class="pull-left" href="#">
+                                        <img class="media-object" height="64" src="{{$reply->photo}}" alt="">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{$reply->author}}
+                                            <small>{{$reply->created_at->diffForHumans()}}</small>
+                                        </h4>
+                                        <p>{{$reply->body}}</p>
+                                    </div>
 
-                                <div class="form-group">
-                                    {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
-                                </div>
-                                {{ Form::close() }}
-                            </div>
-                        <!-- End Nested Comment -->
+                                    <div class="comment-reply-container">
+                                        <button class="toggle-reply btn btn-primary pull-right">Reply</button>
+                                            <div class="comment-reply col-sm-6">
+
+                                                {!! Form::open(['method'=>'POST', 'action'=>'CommentRepliesController@createReply'])!!}
+                                                <input type="hidden" name="comment_id" value="{{$comment->id}}">
+                                                <div class="form-group">
+                                                    {!! Form::label('body','Reply') !!}
+                                                    {!! Form::textarea('body',null, ['class'=>'form-control', 'rows'=>'1']) !!}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
+                                                </div>
+                                                {{ Form::close() }}
+
+                                         </div>
+                                    </div>
+                                <!-- End Nested Comment -->
+                                 </div>
+                            @endif
                         @endforeach
                     @endif
                 </div>
@@ -162,5 +172,15 @@
         </div>
 
     </div>
+
+@stop
+
+@section('scripts')
+    {{-- Skripta koja prilikom klika na reply na Post page-u, "spusta" formu za upis odgovora --}}
+    <script>
+        $(".comment-reply-container .toggle-reply").click(function(){
+            $(this).next().slideToggle("slow");
+        });
+    </script>
 
     @stop
