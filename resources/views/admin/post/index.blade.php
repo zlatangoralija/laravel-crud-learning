@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-
+        php artisan view:clear
         @if($posts)
             @foreach($posts as $post)
               <tr>
